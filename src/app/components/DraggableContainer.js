@@ -28,7 +28,7 @@ export default function DraggableContainer(
             draggingTimeout.current = setTimeout(() => {
                 setDragging(true)
                 setDraggingCallback && setDraggingCallback(true)
-            }, 400) as unknown as number
+            }, 400)
         } else {
             clearTimeout(draggingTimeout.current)
             draggingTimeout.current = -1
