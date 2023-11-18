@@ -29,11 +29,11 @@ const PressableElement = (
         if (!scaleEnabled) {
             setPressedDownScale(1)
         } else if (containerRef.current?.offsetWidth < 100 && containerRef.current?.offsetHeight < 100) {
-            setPressedDownScale(0.92)
+            setPressedDownScale(0.8)
         } else if (containerRef.current?.offsetWidth < 300 && containerRef.current?.offsetHeight < 300) {
-            setPressedDownScale(0.97)
+            setPressedDownScale(0.9)
         } else {
-            setPressedDownScale(0.98)
+            setPressedDownScale(0.95)
         }
     }, [scaleEnabled, containerRef])
 

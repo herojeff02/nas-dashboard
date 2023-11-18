@@ -1,4 +1,4 @@
-import Dot from "./Icons/Dot";
+import Dot from "../Icons/Dot";
 
 export default function PageDots({onClick, dots, gravity, ...props}) {
     if (dots > 0 && !isNaN(dots)) {

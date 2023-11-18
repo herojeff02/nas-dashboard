@@ -11,7 +11,6 @@ export default function ComponentLine(
         <PressableElement
             onClick={action}
             clickColor={"#00000066"}
-            hoverColor={"#00000033"}
             borderEnabled={false}
             scaleEnabled={false}
             >

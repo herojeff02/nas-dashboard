@@ -6,7 +6,7 @@ import 'swiper/css'
 import ControlPage from "./pages/ControlPage";
 import MainPage from "./pages/MainPage";
 import StatusPage from "./pages/StatusPage";
-import {Background} from "./components/StyledComponents";
+import {Background, RevealContainer} from "./components/StyledComponents";
 import PageDots from "./components/PageDots";
 import Wallpaper from "./components/Wallpaper";
 
@@ -14,6 +14,7 @@ import Wallpaper from "./components/Wallpaper";
 export default function Home() {
     const [isSheetExpanded, setSheetExpanded] = useState(false)
     const [activeIndex, setActiveIndex] = useState(1)
+    const [isContainerLoaded, setContainerLoaded] = useState(false)
     const lastTimeout = useRef(0)
     const ref = useRef()
 
@@ -27,13 +28,19 @@ export default function Home() {
         }, 300000)
     }, [activeIndex])
 
+    useEffect(() => {
+        setTimeout(() => {
+            setContainerLoaded(true)
+        }, 1000)
+    }, []);
+
 
     return (
         <>
             <Wallpaper/>
-            <div style={{width: "100%", height: "100%"}}>
+            <RevealContainer loaded={isContainerLoaded}>
                 <Background>
-                    <Swiper
+                    {isContainerLoaded && <Swiper
                         onBeforeInit={(swiper) => {
                             ref.current = swiper;
                         }}
@@ -74,7 +81,8 @@ export default function Home() {
                                 </>
                             </StatusPage>
                         </SwiperSlide>
-                    </Swiper>
+                    </Swiper>}
+
                     <div style={{
                         position: "absolute",
                         bottom: 0,
@@ -99,7 +107,7 @@ export default function Home() {
                             onClick={nextPage} dots={ref.current?.slides.length - activeIndex - 1} gravity={"right"}/>
                     </div>
                 </Background>
-            </div>
+            </RevealContainer>
         </>
     )
 }

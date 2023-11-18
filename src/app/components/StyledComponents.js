@@ -1,5 +1,13 @@
 import styled from "styled-components";
 
+export const RevealContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  opacity: ${({loaded}) => loaded ? 1 : 0};
+  pointer-events: ${({loaded}) => loaded ? "auto" : "none"};
+  transition: opacity 0.5s;
+`
+
 export const Background = styled.div`
   background: var(--wall-background);
   color: var(--wall-text);
