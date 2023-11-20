@@ -7,25 +7,17 @@ import AlignCenterContainer from "../components/AlignCenterContainer";
 import styled from "styled-components";
 import PressableElement from "../components/PressableElement";
 
-export default function MainPage({
-                                     nextPageAction = () => {
-                                     }
-                                 }) {
-    const [isContainerLoaded, setContainerLoaded] = useState(false)
-
-    useEffect(() => {
-        setContainerLoaded(true)
-    }, []);
+export default function MainPage({nextPageAction = () => {}, isContainerLoaded}) {
 
 
     return (<Slide useSheet={false}>
         <Background style={{
-            transform: isContainerLoaded ? "translateX(0)" : "translateX(-100px)",
+            transform: isContainerLoaded ? "translate3d(0,0,0)" : "translate3d(-100px,0,0)",
             transition: "transform 0.3s ease",
             width: 175}}>
             <AlignCenterContainer width={"100%"} height={"100%"}>
                 <ul style={{
-                    transform: isContainerLoaded ? "translateX(0)" : "translateX(-30px)",
+                    transform: isContainerLoaded ? "translate3d(0,0,0)" : "translate3d(-30px,0,0)",
                     transition: "transform 0.35s ease, opacity 0.4s",
                     textAlign: "center",
                     display: "flex",
@@ -63,10 +55,12 @@ export default function MainPage({
             <div style={{display: "flex", justifyContent: "space-between", width: "100%"}}>
                 <div style={{
                     marginLeft: 50,
-                    transform: isContainerLoaded ? "translateX(0)" : "translateX(-60px)",
+                    marginTop: 14,
+                    transform: isContainerLoaded ? "translate3d(0,0,0)" : "translate3d(-60px,0,0)",
                     transition: "transform 0.4s ease, opacity 0.4s",
                     opacity: isContainerLoaded ? 1 : 0,
-                    transitionDelay: "0.3s"
+                    transitionDelay: "0.3s",
+                    textShadow: "0 1px 80px rgba(0,0,0,0.6)"
                 }}>
                     <span style={{
                         color: "#FFFFFF50",
@@ -79,7 +73,7 @@ export default function MainPage({
                 </div>
                 <div style={{
                     opacity: isContainerLoaded ? 1 : 0,
-                    transform: isContainerLoaded ? "translateX(0)" : "translateX(50px)",
+                    transform: isContainerLoaded ? "translate3d(0,0,0)" : "translate3d(50px,0,0)",
                     transition: "transform 0.3s ease, opacity 0.4s",
                     transitionDelay: "0.5s"
                 }}>

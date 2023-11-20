@@ -12,7 +12,6 @@ import Wallpaper from "./components/Wallpaper";
 
 
 export default function Home() {
-    const [isSheetExpanded, setSheetExpanded] = useState(false)
     const [activeIndex, setActiveIndex] = useState(1)
     const [isContainerLoaded, setContainerLoaded] = useState(false)
     const lastTimeout = useRef(0)
@@ -28,19 +27,12 @@ export default function Home() {
         }, 300000)
     }, [activeIndex])
 
-    useEffect(() => {
-        setTimeout(() => {
-            setContainerLoaded(true)
-        }, 500)
-    }, []);
-
 
     return (
         <>
-            <Wallpaper/>
+            <Wallpaper setLoaded={setContainerLoaded}/>
             <RevealContainer loaded={isContainerLoaded}>
-                <Background>
-                    {isContainerLoaded && <Swiper
+                    <Swiper
                         onBeforeInit={(swiper) => {
                             ref.current = swiper;
                         }}
@@ -52,7 +44,6 @@ export default function Home() {
                         allowTouchMove={true}
                         autoplay={true}
                         onSlideChange={(e) => {
-                            setSheetExpanded(e.activeIndex > 1)
                             setActiveIndex(e.activeIndex)
                         }}
                         style={{
@@ -61,34 +52,35 @@ export default function Home() {
                             position: "absolute",
                             left: 0,
                             top: 0,
+                            opacity: isContainerLoaded ? 1 : 0
                         }}
                     >
                         <SwiperSlide style={{width: "100%", height: "100%"}}>
-                            <ControlPage/>
+                            <ControlPage selected={activeIndex === 0}/>
                         </SwiperSlide>
                         <SwiperSlide style={{width: "100%", height: "100%"}}>
-                            <MainPage nextPageAction={nextPage}/>
+                            <MainPage nextPageAction={nextPage} isContainerLoaded={isContainerLoaded}/>
                         </SwiperSlide>
                         <SwiperSlide style={{width: "100%", height: "100%"}}>
-                            <StatusPage isExpanded={isSheetExpanded} animate={true}>
+                            <StatusPage isExpanded={activeIndex > 1} animate={true}>
                                 <>
                                 </>
                             </StatusPage>
                         </SwiperSlide>
                         <SwiperSlide style={{width: "100%", height: "100%"}}>
-                            <StatusPage isExpanded={isSheetExpanded}>
+                            <StatusPage isExpanded={true}>
                                 <>
                                 </>
                             </StatusPage>
                         </SwiperSlide>
-                    </Swiper>}
+                    </Swiper>
 
                     <div style={{
                         position: "absolute",
                         bottom: 0,
-                        transform: isSheetExpanded ? "scale(1.0)" : "scale(0.9)",
-                        opacity: isSheetExpanded ? 1 : 0,
-                        pointerEvents: isSheetExpanded ? "all" : "none",
+                        transform: activeIndex > 1 ? "scale3d(1.0,1.0,1.0)" : "scale3d(0.9,0.9,0.9)",
+                        opacity: activeIndex > 1 ? 1 : 0,
+                        pointerEvents: activeIndex > 1 ? "all" : "none",
                         left: 0,
                         width: "100%",
                         height: 80,
@@ -101,12 +93,12 @@ export default function Home() {
                         <PageDots
                             style={{textAlign: "left", height: "100%", paddingLeft: 60, width: "calc(50% - 150px)"}}
                             onClick={prevPage} dots={activeIndex - 1}/>
-                        <span style={{width: "300px", textAlign: "center"}}>Uptime : ?? days, 20 hours</span>
+                        <span style={{width: "300px", textAlign: "center",
+                            textShadow: "0 1px 30px rgba(0,0,0,0.6)"}}>Uptime : ?? days, 20 hours</span>
                         <PageDots
                             style={{textAlign: "right", height: "100%", paddingRight: 60, width: "calc(50% - 150px)"}}
                             onClick={nextPage} dots={ref.current?.slides.length - activeIndex - 1} gravity={"right"}/>
                     </div>
-                </Background>
             </RevealContainer>
         </>
     )
