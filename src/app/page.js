@@ -9,6 +9,7 @@ import StatusPage from "./pages/StatusPage";
 import {Background, RevealContainer} from "./components/StyledComponents";
 import PageDots from "./components/PageDots";
 import Wallpaper from "./components/Wallpaper";
+import NavBar from "./components/NavBar";
 
 
 export default function Home() {
@@ -47,11 +48,10 @@ export default function Home() {
                     onBeforeInit={(swiper) => {
                         ref.current = swiper;
                     }}
-                    speed={250}
+                    speed={350}
                     initialSlide={1}
                     spaceBetween={0}
                     slidesPerView={"auto"}
-                    simulateTouch={true}
                     allowTouchMove={true}
                     autoplay={true}
                     onSlideChange={(e) => {
@@ -87,30 +87,7 @@ export default function Home() {
                     </SwiperSlide>
                 </Swiper>
 
-                <div style={{
-                    position: "absolute",
-                    bottom: 0,
-                    transform: activeIndex > 1 ? "scale3d(1.0,1.0,1.0)" : "scale3d(0.9,0.9,0.9)",
-                    opacity: activeIndex > 1 ? 1 : 0,
-                    pointerEvents: activeIndex > 1 ? "all" : "none",
-                    left: 0,
-                    width: "100%",
-                    height: 80,
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    transition: "transform 0.4s ease, opacity 0.3s ease",
-                    zIndex: 1
-                }}>
-                    <PageDots
-                        style={{textAlign: "left", height: "100%", paddingLeft: 60, width: "calc(50% - 150px)"}}
-                        onClick={prevPage} dots={activeIndex - 1}/>
-                    <span style={{width: "300px", textAlign: "center", color:"white",
-                        textShadow: "0 1px 30px rgba(0,0,0,0.6)"}}>Uptime : ?? days, 20 hours</span>
-                    <PageDots
-                        style={{textAlign: "right", height: "100%", paddingRight: 60, width: "calc(50% - 150px)"}}
-                        onClick={nextPage} dots={ref.current?.slides.length - activeIndex - 1} gravity={"right"}/>
-                </div>
+                {/*<NavBar isExpanded={activeIndex > 1} nextPage={nextPage} prevPage={prevPage} currentPage={activeIndex + 1} totalPages={ref.current?.slides.length}/>*/}
             </RevealContainer>
         </>
     )
