@@ -31,7 +31,7 @@ export default function Home() {
     useEffect(() => {
         setTimeout(() => {
             setContainerLoaded(true)
-        }, 1000)
+        }, 500)
     }, []);
 
 

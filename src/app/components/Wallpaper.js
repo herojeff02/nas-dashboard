@@ -1,24 +1,26 @@
 import React, {useEffect, useState} from "react";
 
-export default function Wallpaper(){
+export default function Wallpaper() {
     const [wallpaperPath, setWallpaperPath] = useState("")
     const [curtain, setCurtain] = useState(true)
 
+    const revealCurtain = () => setTimeout(() => setCurtain(false), 200)
+
     useEffect(() => {
         setWallpaper()
-        setInterval(()=>{
+        setInterval(() => {
             setCurtain(true)
-            setTimeout(()=>{
+            setTimeout(() => {
                 setWallpaperPath("")
-            },800)
-            setTimeout(()=>{
+            }, 600)
+            setTimeout(() => {
                 setWallpaper()
-            },4000)
+            }, 4000)
         }, 5400000)
     }, []);
 
 
-    function setWallpaper(){
+    function setWallpaper() {
         let wall_path = [
             "/wallpaper/img100.jpg",
             "/wallpaper/img101.png",
@@ -52,25 +54,25 @@ export default function Wallpaper(){
         let final_wall = wall_path[wall];
 
         setWallpaperPath(final_wall)
-        setCurtain(false)
+
     }
 
-    return(
+    return (
         <div style={{width: "100%", height: "100%"}}>
-            <img src={wallpaperPath} alt={""} width={"100%"} height={"100%"}
+            <img onLoad={revealCurtain} src={wallpaperPath} alt={""} width={"100%"}
+                 height={"100%"}
                  style={{
                      objectFit: "cover",
-                     opacity: wallpaperPath === "" ? 0 : 0.6,
-                     transition: "opacity 2s ease"
+                     opacity: 0.6,
                  }}/>
             <div style={{
                 background: "black",
                 position: "absolute",
-                left: 0,
-                bottom: 0,
-                width: "100%",
-                height: curtain ? "100%" : "0%",
-                transition: "height 0.8s ease"
+                right: 0,
+                top: 0,
+                height: "100%",
+                width: curtain ? "100%" : "0%",
+                transition: "width 0.6s ease"
             }}/>
         </div>
     )
