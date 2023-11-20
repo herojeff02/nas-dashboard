@@ -37,16 +37,19 @@ export default function Wallpaper({setLoaded = (a) => {}}) {
             "eberhardgross",
             "limamauro23"
         ];
-        setWallpaperPath("https://source.unsplash.com/user/"+wall_path[Math.floor(Math.random() * wall_path.length)]+"/"+window.innerWidth+"x"+window.innerHeight)
+        setWallpaperPath("https://source.unsplash.com/user/" +
+            wall_path[Math.floor(Math.random() * wall_path.length)] + "/" +
+            window.innerWidth + "x" + window.innerHeight
+        )
     }
 
     return (
-        <div style={{width: "100%", height: "100%", position: "absolute", left: 0, top: 0}}>
+        <div style={{width: "100%", height: "100%", position: "absolute", left: 0, top: 0, overflow:"hidden"}}>
             <img onLoad={revealCurtain} src={wallpaperPath} alt={""} width={"100%"}
                  height={"100%"}
                  style={{
                      objectFit: "cover",
-                     opacity: 0.8,
+                     opacity: 0.7,
                  }}/>
             <div style={{
                 background: "black",

@@ -6,6 +6,7 @@ export const RevealContainer = styled.div`
   top: 0;
   width: 100%;
   height: 100%;
+  overflow: hidden;
   opacity: ${({loaded}) => loaded ? 1 : 0};
   pointer-events: ${({loaded}) => loaded ? "auto" : "none"};
   transition: opacity 0.5s;

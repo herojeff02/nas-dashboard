@@ -63,7 +63,8 @@ export default function MainPage({nextPageAction = () => {}, isContainerLoaded})
                     textShadow: "0 1px 80px rgba(0,0,0,0.6)"
                 }}>
                     <span style={{
-                        color: "#FFFFFF50",
+                        color: "white",
+                        opacity: 0.6,
                         fontWeight: "600",
                         fontSize: 18,
                         marginLeft: 4
