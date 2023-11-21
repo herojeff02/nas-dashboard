@@ -84,7 +84,7 @@ export default function Home() {
                 })
                 .catch(()=>{
                 })
-        }, 1000)
+        }, 10000)
     }, [])
 
     return (

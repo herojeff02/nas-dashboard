@@ -111,7 +111,7 @@ export default function ControlPage({selected = false}) {
                         <div style={{display: "flex", flexDirection: "column", width: "45%", minWidth: 300}}>
                             <div style={{paddingTop: 50}}/>
                             <ComponentLine title={"shutdown"} action={shutdown} shape={ComponentLineShape.circle}/>
-                            <ComponentLine title={"reboot"} action={reboot}/>
+                            <ComponentLine title={"reboot"} action={reboot} shape={ComponentLineShape.circle}/>
                             <div style={{paddingTop: 70}}/>
                             <ComponentLine title={"refresh"} action={() => {
                                 setContainerLoaded(true)
@@ -119,8 +119,8 @@ export default function ControlPage({selected = false}) {
                                     location.reload()
                                 }, 500)
                             }}/>
-                            <ComponentLine title={"restart supervisor"} action={r_supervisor}/>
-                            <ComponentLine title={"restart transmission"} action={r_transmission}/>
+                            <ComponentLine title={"restart supervisor"} action={r_supervisor} shape={ComponentLineShape.pill}/>
+                            <ComponentLine title={"restart transmission"} action={r_transmission} shape={ComponentLineShape.pill}/>
                         </div>
                     </AlignCenterContainer>
                 </RevealContainer>
