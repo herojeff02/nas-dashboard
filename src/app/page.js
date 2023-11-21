@@ -27,7 +27,7 @@ export default function Home() {
     useEffect(() => {
         clearTimeout(lastTimeout.current)
         lastTimeout.current = setTimeout(() => {
-            ref.current?.slideTo(1, 3000)
+            ref.current?.slideTo(1, 1500)
         }, 300000)
     }, [activeIndex])
 

@@ -6,11 +6,20 @@ import ComponentLine from "@/app/components/ControlPage/ComponentLine";
 import {API} from "../api";
 import Dialog from "../components/Dialog/Dialog";
 import {ComponentLineShape} from "../components/ControlPage/ComponentLine";
+import Forgor from "../Icons/RebootIcon";
+import PowerIcon from "../Icons/ShutdownIcon";
+import SupervisorIcon from "../Icons/SupervisorIcon";
+import TorrentIcon from "../Icons/TorrentIcon";
+import RefreshIcon from "../Icons/RefreshIcon";
+import RebootIcon from "../Icons/RebootIcon";
+import ShutdownIcon from "../Icons/ShutdownIcon";
 
 export default function ControlPage({selected = false}) {
     const [isContainerLoaded, setContainerLoaded] = useState(false)
     const [isShutdownDialogOpen, setShutdownDialogOpen] = useState(false)
+    const [isShutdownConfirmationDialogOpen, setShutdownConfirmationDialogOpen] = useState(false)
     const [isRebootDialogOpen, setRebootDialogOpen] = useState(false)
+    const [isRebootConfirmationDialogOpen, setRebootConfirmationDialogOpen] = useState(false)
     const [isTransmissionDialogOpen, setTransmissionDialogOpen] = useState(false)
     const [isWaitingResponseDialogOpen, setWaitingResponseDialogOpen] = useState(false)
     const [isErrorDialogOpen, setErrorDialogOpen] = useState(false)
@@ -29,6 +38,7 @@ export default function ControlPage({selected = false}) {
     const wait = (func) => setTimeout(func, 6000)
 
     const shutdown = () => {
+        setShutdownConfirmationDialogOpen(false)
         setWaitingResponseDialogOpen(true)
         api
             .get(api.AVAIL_ENDPOINT.power.shutdown)
@@ -43,7 +53,11 @@ export default function ControlPage({selected = false}) {
                 setWaitingResponseDialogOpen(false)
             })
     }
+    const shutdownConfirmation = () => {
+        setShutdownConfirmationDialogOpen(true)
+    }
     const reboot = () => {
+        setRebootConfirmationDialogOpen(false)
         setWaitingResponseDialogOpen(true)
         api
             .get(api.AVAIL_ENDPOINT.power.reboot)
@@ -57,6 +71,15 @@ export default function ControlPage({selected = false}) {
                 wait(()=>setRebootDialogOpen(false))
                 setWaitingResponseDialogOpen(false)
             })
+    }
+    const rebootConfirmation = () =>{
+        setRebootConfirmationDialogOpen(true)
+    }
+    const refresh = () =>{
+        setContainerLoaded(true)
+        setTimeout(() => {
+            location.reload()
+        }, 500)
     }
     const r_supervisor = () => {
         setWaitingResponseDialogOpen(true)
@@ -107,22 +130,17 @@ export default function ControlPage({selected = false}) {
                 // transition: "backdrop-filter 5s steps(12), -webkit-backdrop-filter 5s steps(12)"
             }}>
                 <RevealContainer reveal={!isContainerLoaded}>
-                    <AlignCenterContainer width={"100%"} height={"100%"}>
-                        <div style={{display: "flex", flexDirection: "column", width: "45%", minWidth: 300}}>
-                            <div style={{paddingTop: 50}}/>
-                            <ComponentLine title={"shutdown"} action={shutdown} shape={ComponentLineShape.circle}/>
-                            <ComponentLine title={"reboot"} action={reboot} shape={ComponentLineShape.circle}/>
-                            <div style={{paddingTop: 70}}/>
-                            <ComponentLine title={"refresh"} action={() => {
-                                setContainerLoaded(true)
-                                setTimeout(() => {
-                                    location.reload()
-                                }, 500)
-                            }}/>
-                            <ComponentLine title={"restart supervisor"} action={r_supervisor} shape={ComponentLineShape.pill}/>
-                            <ComponentLine title={"restart transmission"} action={r_transmission} shape={ComponentLineShape.pill}/>
-                        </div>
-                    </AlignCenterContainer>
+                    <div style={{position:"absolute", left:"calc(50% + 10px)", top:"50%", transform:"translate(-50%, calc(-50% - 20px))"}}>
+                        <ComponentLine action={refresh} width={165} shape={ComponentLineShape.pill} icon={<RefreshIcon width={"38px"} height={"40px"} style={{transform:"translateX(-2px)"}}/>} title={"refresh"}/>
+                        <ComponentLine action={r_supervisor} width={270} shape={ComponentLineShape.pill} icon={<SupervisorIcon width={"34px"} height={"40px"}/>} title={"restart supervisor"}/>
+                        <ComponentLine action={r_transmission} width={290} shape={ComponentLineShape.pill} icon={<TorrentIcon width={"35px"} height={"38px"}/>} title={"restart transmission"}/>
+                    </div>
+                    <div style={{position:"absolute", left:"50%", bottom:"40px", transform:"translate(-50%, 0)"}}>
+                        <AlignCenterContainer width={"100%"}>
+                            <ComponentLine action={shutdownConfirmation} shape={ComponentLineShape.circle} icon={<ShutdownIcon width={"100%"} height={"100%"}/>} title={""}/>
+                            <ComponentLine action={rebootConfirmation} shape={ComponentLineShape.circle} icon={<RebootIcon width={"100%"} height={"100%"}/>} title={""}/>
+                        </AlignCenterContainer>
+                    </div>
                 </RevealContainer>
             </Background>
             <Dialog
@@ -152,5 +170,24 @@ export default function ControlPage({selected = false}) {
                 mainText={"Failed"}
                 primaryButtonText={"Confirm"}
                 primaryButtonAction={() => setErrorDialogOpen(false)}/>
+
+            <Dialog
+                showQuestionIcon={true}
+                setVisible={setRebootConfirmationDialogOpen}
+                isVisible={isRebootConfirmationDialogOpen}
+                mainText={"Reboot?"}
+                primaryButtonText={"Confirm"}
+                primaryButtonAction={reboot}
+                secondaryButtonText={"Cancel"}
+                secondaryButtonAction={() => setRebootConfirmationDialogOpen(false)}/>
+            <Dialog
+                showQuestionIcon={true}
+                setVisible={setShutdownConfirmationDialogOpen}
+                isVisible={isShutdownConfirmationDialogOpen}
+                mainText={"Shutdown?"}
+                primaryButtonText={"Confirm"}
+                primaryButtonAction={shutdown}
+                secondaryButtonText={"Cancel"}
+                secondaryButtonAction={() => setShutdownConfirmationDialogOpen(false)}/>
         </Slide>)
 }

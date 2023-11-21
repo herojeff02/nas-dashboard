@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import ComponentLine, {STATUS} from "../components/MainPage/ComponentLine";
 import Slide from "../components/Slide";
-import ArrowLeft from "../Icons/ArrowLeft";
+import ArrowLeft from "../Icons/ArrowLeftIcon";
 import {Background} from "../components/StyledComponents";
 import AlignCenterContainer from "../components/AlignCenterContainer";
 import styled from "styled-components";

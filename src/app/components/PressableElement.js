@@ -7,8 +7,8 @@ const PressableElement = (
     {
         children = <></>,
         idleColor = TRANSPARENT_COLOR,
-        hoverColor = "#00000006",
-        clickColor = "#00000010",
+        hoverColor = "#EDEDED",
+        clickColor = "#EEE",
         borderColor = "#ddddddC0",
         borderEnabled = true,
         borderRadius = "0px" || 0,
