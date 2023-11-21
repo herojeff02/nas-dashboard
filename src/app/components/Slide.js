@@ -5,11 +5,11 @@ const Slide = ({children, useSheet = true, animateSheet = false, isExpanded = fa
     if (useSheet) {
         if (animateSheet) {
             return <div style={{height: "100%", width: "100%", display: "flex", alignItems: "center"}}>
-                <AnimatedSheet isExpanded={isExpanded}>{children}</AnimatedSheet>
+                <AnimatedSheet $isExpanded={isExpanded}>{children}</AnimatedSheet>
             </div>
         } else {
             return <div style={{height: "100%", width: "100%", display: "flex", alignItems: "center"}}>
-                <Sheet isExpanded={isExpanded}>{children}</Sheet>
+                <Sheet>{children}</Sheet>
             </div>
         }
     } else {

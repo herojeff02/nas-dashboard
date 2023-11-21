@@ -18,7 +18,7 @@ export default function ComponentLine(
     switch (shape) {
         case ComponentLineShape.circle:
             return (
-                <span style={{padding: 20}}>
+                <span style={{padding: "0 20px"}}>
                     <PressableElement
                         onClick={action}
                         borderEnabled={false}
@@ -40,7 +40,7 @@ export default function ComponentLine(
             )
         case ComponentLineShape.pill:
             return (
-                <span style={{padding: 10}}>
+                <span style={{padding: "10px"}}>
                     <PressableElement
                         onClick={action}
                         borderEnabled={false}

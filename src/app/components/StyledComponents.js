@@ -21,14 +21,14 @@ export const Background = styled.div`
 
 export const AnimatedSheet = styled.div`
   position: absolute;
-  transform: ${({isExpanded}) => isExpanded ? "translate3d(20px, -2px, 0)" : "translate3d(0, -2px, 0)"};
-  height: ${({isExpanded}) => isExpanded ? "calc(100% - 40px)" : "150px"};
-  width: ${({isExpanded}) => isExpanded ? "calc(100% - 40px)" : "calc(100% + 80px)"};
+  transform: ${({$isExpanded}) => $isExpanded ? "translate3d(20px, -2px, 0)" : "translate3d(0, -2px, 0)"};
+  height: ${({$isExpanded}) => $isExpanded ? "calc(100% - 40px)" : "150px"};
+  width: ${({$isExpanded}) => $isExpanded ? "calc(100% - 40px)" : "calc(100% + 80px)"};
   background: var(--tile-background);
   color: var(--tile-text);
   overflow: hidden;
   overflow-y: scroll;
-  border-radius: ${({isExpanded}) => isExpanded ? "20px" : "100px"};
+  border-radius: ${({$isExpanded}) => $isExpanded ? "20px" : "100px"};
   transition: transform 0.6s ease, height 0.4s ease, width 0.6s ease;
 `
 export const Sheet = styled.div`
