@@ -44,14 +44,14 @@ const PressableElement = (
         onContextMenu={() => {
             return false;
         }}
-        isMobile={isMobile}
-        idleColor={idleColor}
-        hoverColor={hoverColor}
-        clickColor={clickColor}
-        borderColor={borderColor}
-        borderEnabled={borderEnabled}
-        backgroundEnabled={backgroundEnabled}
-        pressedDownScale={pressedDownScale}
+        $isMobile={isMobile}
+        $idleColor={idleColor}
+        $hoverColor={hoverColor}
+        $clickColor={clickColor}
+        $borderColor={borderColor}
+        $borderEnabled={borderEnabled}
+        $backgroundEnabled={backgroundEnabled}
+        $pressedDownScale={pressedDownScale}
         cursor={cursor}
         className={className}
 
@@ -63,13 +63,13 @@ const PressableElement = (
     >
         {children}
         {coverMode && <Container
-            isMobile={isMobile}
-            idleColor={idleColor}
-            hoverColor={hoverColor}
-            clickColor={clickColor}
-            borderEnabled={false}
-            backgroundEnabled={backgroundEnabled}
-            pressedDownScale={1}
+            $isMobile={isMobile}
+            $idleColor={idleColor}
+            $hoverColor={hoverColor}
+            $clickColor={clickColor}
+            $borderEnabled={false}
+            $backgroundEnabled={backgroundEnabled}
+            $pressedDownScale={1}
             cursor={cursor}
 
             style={{
@@ -89,36 +89,36 @@ const Container = styled.div`
   margin: 0;
   padding: 0;
   overflow: hidden;
-  cursor: ${({cursor, backgroundEnabled}) => backgroundEnabled ? cursor : "default"};
+  cursor: ${({cursor, $backgroundEnabled}) => $backgroundEnabled ? cursor : "default"};
 
-  background: ${({idleColor, backgroundEnabled}) => backgroundEnabled ? idleColor : TRANSPARENT_COLOR};
+  background: ${({$idleColor, $backgroundEnabled}) => $backgroundEnabled ? $idleColor : TRANSPARENT_COLOR};
   transform: scale3d(1, 1, 1);
   box-shadow: 0 0 0 1px ${({
-                             borderEnabled,
-                             borderColor
-                           }) => borderEnabled ? borderColor : TRANSPARENT_COLOR} inset;
+                             $borderEnabled,
+                             $borderColor
+                           }) => $borderEnabled ? $borderColor : TRANSPARENT_COLOR} inset;
   transition: background-color 0.25s, box-shadow 0.25s, transform 0.3s;
 
   :hover {
-    background: ${({idleColor, hoverColor, isMobile, backgroundEnabled}) => {
-      if (backgroundEnabled) {
-        if (isMobile) {
-          return idleColor
+    background: ${({$idleColor, $hoverColor, $isMobile, $backgroundEnabled}) => {
+      if ($backgroundEnabled) {
+        if ($isMobile) {
+          return $idleColor
         } else {
-          return hoverColor
+          return $hoverColor
         }
       } else {
         return TRANSPARENT_COLOR
       }
     }};
-    box-shadow: 0 0 0 1px ${({borderEnabled, hoverColor, borderColor, isMobile, backgroundEnabled}) => {
-      if (backgroundEnabled) {
-        if (borderEnabled) {
-          return borderColor
-        } else if (isMobile) {
+    box-shadow: 0 0 0 1px ${({$borderEnabled, $hoverColor, $borderColor, $isMobile, $backgroundEnabled}) => {
+      if ($backgroundEnabled) {
+        if ($borderEnabled) {
+          return $borderColor
+        } else if ($isMobile) {
           return TRANSPARENT_COLOR
         } else {
-          return hoverColor
+          return $hoverColor
         }
       } else {
         return TRANSPARENT_COLOR
@@ -129,13 +129,13 @@ const Container = styled.div`
   }
 
   :active {
-    background: ${({clickColor, backgroundEnabled}) => backgroundEnabled ? clickColor : TRANSPARENT_COLOR};
-    transform: scale3d(${({pressedDownScale}) => pressedDownScale}, ${({pressedDownScale}) => pressedDownScale}, 1);
+    background: ${({$clickColor, $backgroundEnabled}) => $backgroundEnabled ? $clickColor : TRANSPARENT_COLOR};
+    transform: scale3d(${({$pressedDownScale}) => $pressedDownScale}, ${({$pressedDownScale}) => $pressedDownScale}, 1);
     box-shadow: 0 0 0 1px ${({
-                               borderEnabled,
-                               borderColor,
-                               backgroundEnabled
-                             }) => (backgroundEnabled && borderEnabled) ? borderColor : TRANSPARENT_COLOR} inset;
+                               $borderEnabled,
+                               $borderColor,
+                               $backgroundEnabled
+                             }) => ($backgroundEnabled && $borderEnabled) ? $borderColor : TRANSPARENT_COLOR} inset;
     transition: background-color 0.15s, box-shadow 0.15s, transform 0.17s;
   }
 

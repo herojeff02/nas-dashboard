@@ -15,8 +15,9 @@ import Dialog from "./components/Dialog/Dialog";
 
 export default function Home() {
     const [activeIndex, setActiveIndex] = useState(1)
-    const [isReconnecting, setReconnecting] = useState(true)
+    const [isReconnecting, setReconnecting] = useState(false)
     const [isContainerLoaded, setContainerLoaded] = useState(false)
+    const [temporarySdaText, setSdaText] = useState("loading")
     const lastTimeout = useRef(0)
     const ref = useRef()
 
@@ -26,7 +27,7 @@ export default function Home() {
     useEffect(() => {
         clearTimeout(lastTimeout.current)
         lastTimeout.current = setTimeout(() => {
-            ref.current?.slideTo(1)
+            ref.current?.slideTo(1, 3000)
         }, 300000)
     }, [activeIndex])
 
@@ -35,15 +36,32 @@ export default function Home() {
     }
 
     useEffect(() => {
-        document.body.addEventListener('touchmove', handleScrollLock, { passive: false });
+        document.body.addEventListener('touchmove', handleScrollLock, {passive: false});
         return () => {
-            document.body.removeEventListener('touchmove', handleScrollLock, { passive: false })
+            document.body.removeEventListener('touchmove', handleScrollLock, {passive: false})
         }
     }, [])
 
 
+    // useEffect(() => {
+    //     const start = performance.now();
+    //     let i = 0;
+    //     function count() {
+    //         do {i++;} while (i % 1e6 !== 0)
+    //         if (i === 1e9) {console.log('Task completed!')}
+    //         else {setTimeout(count, 0)}
+    //     }
+    //     count();
+    //     const duration = performance.now() - start;
+    //     if(Math.floor(duration) > 5){
+    //         setHeavyAnimation(false)
+    //     }
+    // }, []);
+
+
     useEffect(() => {
-        const api = new API()
+        const api = new API(1500)
+        setTimeout(()=>setReconnecting(true),300)
         setInterval(() => {
             api
                 .get(api.AVAIL_ENDPOINT.ping)
@@ -53,19 +71,31 @@ export default function Home() {
                 .catch(()=>{
                     setReconnecting(true)
                 })
-        }, 1000)
+        }, 2000)
     }, [])
 
+    useEffect(() => {
+        const api = new API(1500)
+        setInterval(() => {
+            api
+                .get(api.AVAIL_ENDPOINT.smartctl.sda)
+                .then((r) => {
+                    setSdaText(r.data.splice(58,18).join(""))
+                })
+                .catch(()=>{
+                })
+        }, 1000)
+    }, [])
 
     return (
         <>
             <Wallpaper setLoaded={setContainerLoaded}/>
-            <RevealContainer loaded={isContainerLoaded}>
+            <RevealContainer reveal={isContainerLoaded}>
                 <Swiper
                     onBeforeInit={(swiper) => {
                         ref.current = swiper;
                     }}
-                    speed={350}
+                    speed={400}
                     initialSlide={1}
                     spaceBetween={0}
                     slidesPerView={"auto"}
@@ -92,31 +122,28 @@ export default function Home() {
                     </SwiperSlide>
                     <SwiperSlide style={{width: "100%", height: "100%"}}>
                         <StatusPage isExpanded={activeIndex > 1} animate={true}>
-                            <>
-                            </>
+                            <div>
+                                {temporarySdaText}
+                            </div>
                         </StatusPage>
                     </SwiperSlide>
                     <SwiperSlide style={{width: "100%", height: "100%"}}>
-                        <StatusPage isExpanded={true}>
-                            <>
-                            </>
+                        <StatusPage isExpanded={activeIndex > 1}>
+                            <div>
+                                asdf
+                            </div>
                         </StatusPage>
                     </SwiperSlide>
                 </Swiper>
 
                 {/*<NavBar isExpanded={activeIndex > 1} nextPage={nextPage} prevPage={prevPage} currentPage={activeIndex + 1} totalPages={ref.current?.slides.length}/>*/}
             </RevealContainer>
-            <BottomSheet isOpen={isReconnecting} preferredWidth={"300px"} preferredHeight={"100px"}>
-                <div style={{
-                    color: "black",
-                    textAlign: "center",
-                    padding: "34px 0 0 0",
-                    fontSize: "26px",
-                    fontWeight: "200",
-                }}>
-                    Connecting...
-                </div>
-            </BottomSheet>
+
+            <Dialog
+                showLoadingIcon={true}
+                isVisible={isReconnecting}
+                mainText={"Connecting..."}/>
+
         </>
     )
 }

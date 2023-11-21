@@ -8,6 +8,8 @@ import styled from "styled-components";
 import PressableElement from "../components/PressableElement";
 
 export default function MainPage({nextPageAction = () => {}, isContainerLoaded}) {
+    const [highPerfTask, setHighPerfTask] = useState("containerd")
+
 
 
     return (<Slide useSheet={false}>
@@ -70,7 +72,7 @@ export default function MainPage({nextPageAction = () => {}, isContainerLoaded})
                         marginLeft: 4
                     }}>Highest CPU Usage</span>
                     <br/>
-                    <span style={{color: "white", fontWeight: "600", fontSize: 50}}>containerd</span>
+                    <span style={{color: "white", fontWeight: "600", fontSize: 50}}>{highPerfTask}</span>
                 </div>
                 <div style={{
                     opacity: isContainerLoaded ? 1 : 0,
