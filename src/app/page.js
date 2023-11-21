@@ -6,14 +6,16 @@ import 'swiper/css'
 import ControlPage from "./pages/ControlPage";
 import MainPage from "./pages/MainPage";
 import StatusPage from "./pages/StatusPage";
-import {Background, RevealContainer} from "./components/StyledComponents";
-import PageDots from "./components/PageDots";
+import {RevealContainer} from "./components/StyledComponents";
 import Wallpaper from "./components/Wallpaper";
-import NavBar from "./components/NavBar";
+import BottomSheet from "./components/Sheet/BottomSheet";
+import {API} from "./api";
+import Dialog from "./components/Dialog/Dialog";
 
 
 export default function Home() {
     const [activeIndex, setActiveIndex] = useState(1)
+    const [isReconnecting, setReconnecting] = useState(true)
     const [isContainerLoaded, setContainerLoaded] = useState(false)
     const lastTimeout = useRef(0)
     const ref = useRef()
@@ -37,6 +39,21 @@ export default function Home() {
         return () => {
             document.body.removeEventListener('touchmove', handleScrollLock, { passive: false })
         }
+    }, [])
+
+
+    useEffect(() => {
+        const api = new API()
+        setInterval(() => {
+            api
+                .get(api.AVAIL_ENDPOINT.ping)
+                .then(() => {
+                    setReconnecting(false)
+                })
+                .catch(()=>{
+                    setReconnecting(true)
+                })
+        }, 1000)
     }, [])
 
 
@@ -89,6 +106,17 @@ export default function Home() {
 
                 {/*<NavBar isExpanded={activeIndex > 1} nextPage={nextPage} prevPage={prevPage} currentPage={activeIndex + 1} totalPages={ref.current?.slides.length}/>*/}
             </RevealContainer>
+            <BottomSheet isOpen={isReconnecting} preferredWidth={"300px"} preferredHeight={"100px"}>
+                <div style={{
+                    color: "black",
+                    textAlign: "center",
+                    padding: "34px 0 0 0",
+                    fontSize: "26px",
+                    fontWeight: "200",
+                }}>
+                    Connecting...
+                </div>
+            </BottomSheet>
         </>
     )
 }

@@ -1,27 +1,28 @@
 import {Background, RevealContainer} from "@/app/components/StyledComponents";
 import AlignCenterContainer from "@/app/components/AlignCenterContainer";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Slide from "@/app/components/Slide";
 import ComponentLine from "@/app/components/ControlPage/ComponentLine";
-import axios from "axios";
+import {API} from "../api";
+import Dialog from "../components/Dialog/Dialog";
 
 export default function ControlPage({selected = false}) {
+    const [isContainerLoaded, setContainerLoaded] = useState(false)
+    const api = new API();
 
-    const SERVER = "http://1.2.3.2:55255/"
     const shutdown = ()=>{
-        axios.get(SERVER + "power/shutdown")
+        api.get(api.AVAIL_ENDPOINT.power.shutdown)
     }
     const reboot = ()=>{
-        axios.get(SERVER + "power/reboot")
+        api.get(api.AVAIL_ENDPOINT.power.reboot)
     }
     const r_supervisor = ()=>{
-        axios.get(SERVER + "service/supervisor")
+        api.get(api.AVAIL_ENDPOINT.service.supervisor)
     }
     const r_transmission = ()=>{
-        axios.get(SERVER + "service/transmission")
+        api.get(api.AVAIL_ENDPOINT.service.transmission)
     }
 
-    const [isContainerLoaded, setContainerLoaded] = useState(false)
     return (
         <Slide useSheet={false}>
             <RevealContainer loaded={isContainerLoaded}>
