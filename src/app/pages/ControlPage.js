@@ -3,17 +3,16 @@ import AlignCenterContainer from "@/app/components/AlignCenterContainer";
 import React, {useState} from "react";
 import Slide from "@/app/components/Slide";
 import ComponentLine from "@/app/components/ControlPage/ComponentLine";
-import Dialog from "../components/Dialog/Dialog";
 import axios from "axios";
 
 export default function ControlPage({selected = false}) {
 
     const SERVER = "http://1.2.3.2:55255/"
     const shutdown = ()=>{
-        axios.get(SERVER + "shutdown")
+        axios.get(SERVER + "power/shutdown")
     }
     const reboot = ()=>{
-        axios.get(SERVER + "reboot")
+        axios.get(SERVER + "power/reboot")
     }
     const r_supervisor = ()=>{
         axios.get(SERVER + "service/supervisor")
