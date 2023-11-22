@@ -20,7 +20,7 @@ export default function StatusPage({children = <></>, isExpanded = false, animat
     useEffect(()=>{
         if(expandWithDelay) {
             setTimeout(() => setShowDetailsWithDelay(true), 650)
-            setTimeout(() => setShowDetailsWithDelayPrecondition(true), 630)
+            setTimeout(() => setShowDetailsWithDelayPrecondition(true), 600)
         }
         else{
             setShowDetailsWithDelay(false)

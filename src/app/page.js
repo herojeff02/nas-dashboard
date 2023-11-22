@@ -128,7 +128,7 @@ export default function Home() {
                         </StatusPage>
                     </SwiperSlide>
                     <SwiperSlide style={{width: "100%", height: "100%"}}>
-                        <StatusPage isExpanded={activeIndex > 1}>
+                        <StatusPage isExpanded={true}>
                             <div>
                                 asdf
                             </div>
