@@ -35,7 +35,7 @@ export default function ControlPage({selected = false}) {
         }
     }, [selected])
 
-    const wait = (func) => setTimeout(func, 6000)
+    const wait = (func) => setTimeout(func, 8000)
 
     const shutdown = () => {
         setConfirmationDialogOpen(false)

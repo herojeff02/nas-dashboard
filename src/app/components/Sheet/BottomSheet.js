@@ -85,7 +85,7 @@ export default function BottomSheet(
                     pointerEvents: isOpen ? `all` : `none`,
                     transition: `opacity 0.25s, transform 0.3s`,
                     opacity: isOpen ? `1` : `0`,
-                    transform: isOpen ? `translate3d(-50%,0,0)` : `translate3d(-50%, 24px, 0)`
+                    transform: isOpen ? `translate3d(-50%,0,0)` : `translate3d(-50%, 20px, 0)`
                 }}
             >
                 <div

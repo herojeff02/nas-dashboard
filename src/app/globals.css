@@ -19,6 +19,8 @@
     -o-user-drag: none !important;
     -webkit-tap-highlight-color: transparent;
     -webkit-overflow-scrolling: touch;
+
+    scroll-behavior: smooth;
 }
 
 html,

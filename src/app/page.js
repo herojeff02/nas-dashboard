@@ -17,12 +17,30 @@ export default function Home() {
     const [activeIndex, setActiveIndex] = useState(1)
     const [isReconnecting, setReconnecting] = useState(false)
     const [isContainerLoaded, setContainerLoaded] = useState(false)
-    const [temporarySdaText, setSdaText] = useState("loading")
+    const [prometheusData, setPrometheusData] = useState({})
     const lastTimeout = useRef(0)
     const ref = useRef()
 
+
     const nextPage = () => ref.current?.slideNext()
     const prevPage = () => ref.current?.slidePrev()
+
+
+    const slides = [
+        <ControlPage key={0} selected={activeIndex === 0}/>,
+        <MainPage key={1} prometheus={prometheusData} nextPageAction={nextPage} isContainerLoaded={isContainerLoaded}/>,
+        <StatusPage key={2} prometheus={prometheusData} title={"SDA"} selected={activeIndex === 2} isExpanded={activeIndex > 1} animate={true}>
+            <div>
+                {prometheusData?.sda?.smartprom_temperature_celsius_raw ?? "loading..."}
+            </div>
+        </StatusPage>,
+        <StatusPage key={3} prometheus={prometheusData}title={"SDB"} selected={activeIndex === 3} isExpanded={true}>
+            <div>
+                Empty Page
+            </div>
+        </StatusPage>
+    ]
+
 
     useEffect(() => {
         clearTimeout(lastTimeout.current)
@@ -31,64 +49,51 @@ export default function Home() {
         }, 300000)
     }, [activeIndex])
 
-    const handleScrollLock = (e) => {
-        e.preventDefault()
-    }
-
-    useEffect(() => {
-        document.body.addEventListener('touchmove', handleScrollLock, {passive: false});
-        return () => {
-            document.body.removeEventListener('touchmove', handleScrollLock, {passive: false})
-        }
-    }, [])
-
-
+    // const handleScrollLock = (e) => {
+    //     e.preventDefault()
+    // }
+    //
     // useEffect(() => {
-    //     const start = performance.now();
-    //     let i = 0;
-    //     function count() {
-    //         do {i++;} while (i % 1e6 !== 0)
-    //         if (i === 1e9) {console.log('Task completed!')}
-    //         else {setTimeout(count, 0)}
+    //     document.body.addEventListener('touchmove', handleScrollLock, {passive: false});
+    //     return () => {
+    //         document.body.removeEventListener('touchmove', handleScrollLock, {passive: false})
     //     }
-    //     count();
-    //     const duration = performance.now() - start;
-    //     if(Math.floor(duration) > 5){
-    //         setHeavyAnimation(false)
-    //     }
-    // }, []);
-
+    // }, [])
 
     useEffect(() => {
+        //Connecting Dialog
         const api = new API(1500)
-        setTimeout(()=>setReconnecting(true),300)
-        setInterval(() => {
+        setTimeout(() => setReconnecting(true), 300)
+        const intervalId = setInterval(() => {
             api
                 .get(api.AVAIL_ENDPOINT.ping)
                 .then(() => {
                     setReconnecting(false)
+                    clearInterval(intervalId)
                 })
-                .catch(()=>{
+                .catch(() => {
                     setReconnecting(true)
                 })
         }, 2000)
     }, [])
 
+
     useEffect(() => {
-        const api = new API(1500)
+        const api = new API(2000)
         setInterval(() => {
             api
-                .get(api.AVAIL_ENDPOINT.smartctl.sda)
+                .get(api.AVAIL_ENDPOINT.prometheus)
                 .then((r) => {
-                    setSdaText(r.data.splice(58,18).join(""))
+                    setPrometheusData(r.data)
+                    console.log(r.data)
                 })
-                .catch(()=>{
+                .catch(() => {
                 })
         }, 10000)
     }, [])
 
     return (
-        <>
+        <div style={{position: "fixed", top: 0, left: 0, width: "100%", height: "100%"}}>
             <Wallpaper setLoaded={setContainerLoaded}/>
             <RevealContainer reveal={isContainerLoaded}>
                 <Swiper
@@ -111,32 +116,15 @@ export default function Home() {
                         left: 0,
                         top: 0,
                         opacity: isContainerLoaded ? 1 : 0,
-                        overflow: "hidden"
-                    }}
-                >
-                    <SwiperSlide style={{width: "100%", height: "100%"}}>
-                        <ControlPage selected={activeIndex === 0}/>
-                    </SwiperSlide>
-                    <SwiperSlide style={{width: "100%", height: "100%"}}>
-                        <MainPage nextPageAction={nextPage} isContainerLoaded={isContainerLoaded}/>
-                    </SwiperSlide>
-                    <SwiperSlide style={{width: "100%", height: "100%"}}>
-                        <StatusPage isExpanded={activeIndex > 1} animate={true}>
-                            <div>
-                                {temporarySdaText}
-                            </div>
-                        </StatusPage>
-                    </SwiperSlide>
-                    <SwiperSlide style={{width: "100%", height: "100%"}}>
-                        <StatusPage isExpanded={true}>
-                            <div>
-                                asdf
-                            </div>
-                        </StatusPage>
-                    </SwiperSlide>
+                        overflowX: "hidden",
+                        overflowY: "scroll"
+                    }}>
+                    {slides.map((item, index) => {
+                        return <SwiperSlide key={index} style={{width: "100%", height: "100%"}}>
+                            {item}
+                        </SwiperSlide>
+                    })}
                 </Swiper>
-
-                {/*<NavBar isExpanded={activeIndex > 1} nextPage={nextPage} prevPage={prevPage} currentPage={activeIndex + 1} totalPages={ref.current?.slides.length}/>*/}
             </RevealContainer>
 
             <Dialog
@@ -144,6 +132,6 @@ export default function Home() {
                 isVisible={isReconnecting}
                 mainText={"Connecting..."}/>
 
-        </>
+        </div>
     )
 }

@@ -29,12 +29,12 @@ export const AnimatedSheet = styled.div`
   overflow: hidden;
   overflow-y: scroll;
   border-radius: ${({$isExpanded}) => $isExpanded ? "10px" : "100px"};
-  transition: transform 0.6s ease, height 0.4s ease, width 0.6s ease;
+  transition: transform 0.6s ease, height 0.4s ease, width 0.6s ease, border-radius 0.32s ease;
 `
 export const Sheet = styled.div`
   position: absolute;
   transform: translate3d(20px, -2px, 0);
-  border-radius: 20px;
+  border-radius: 10px;
   height: calc(100% - 40px);
   width: calc(100% - 40px);
   background: var(--tile-background);

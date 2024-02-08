@@ -26,9 +26,6 @@ export const API = class {
             "supervisor": "service/supervisor",
             "transmission": "service/transmission"
         },
-        "smartctl": {
-            "sda": "smartctl/sda",
-            "sdb": "smartctl/sdb"
-        }
+        "prometheus": "prometheus"
     }
 }
