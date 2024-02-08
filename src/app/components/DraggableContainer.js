@@ -142,7 +142,6 @@ export default function DraggableContainer(
             bottom: 0,
             position: "fixed",
             width: "100%",
-            maxWidth: "500px",
             height: "100%",
             pointerEvents: isDragging ? "all" : "none",
             zIndex: 1000,
