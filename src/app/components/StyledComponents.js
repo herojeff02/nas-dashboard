@@ -28,7 +28,7 @@ export const AnimatedSheet = styled.div`
   color: var(--tile-text);
   overflow: hidden;
   overflow-y: scroll;
-  border-radius: ${({$isExpanded}) => $isExpanded ? "20px" : "100px"};
+  border-radius: ${({$isExpanded}) => $isExpanded ? "10px" : "100px"};
   transition: transform 0.6s ease, height 0.4s ease, width 0.6s ease;
 `
 export const Sheet = styled.div`

@@ -62,7 +62,7 @@ export default function MainPage({nextPageAction = () => {}, isContainerLoaded})
                     transition: "transform 0.4s ease, opacity 0.4s",
                     opacity: isContainerLoaded ? 1 : 0,
                     transitionDelay: "0.3s",
-                    textShadow: "0 1px 80px rgba(0,0,0,0.6)"
+                    // textShadow: "0 1px 80px rgba(0,0,0,0.6)" //slows down animation massively - replaced with div
                 }}>
                     <span style={{
                         color: "white",
@@ -73,6 +73,17 @@ export default function MainPage({nextPageAction = () => {}, isContainerLoaded})
                     }}>Highest CPU Usage</span>
                     <br/>
                     <span style={{color: "white", fontWeight: "600", fontSize: 50}}>{highPerfTask}</span>
+                    <div style={{
+                        position: "absolute",
+                        bottom: 0,
+                        transform: "translate3d(0, -23px, 0)",
+                        background: "black",
+                        filter: "blur(10px)",
+                        opacity: 0.15,
+                        width: "100%",
+                        height: "40px",
+                        zIndex: -1
+                    }}/>
                 </div>
                 <div style={{
                     opacity: isContainerLoaded ? 1 : 0,
@@ -91,7 +102,8 @@ export default function MainPage({nextPageAction = () => {}, isContainerLoaded})
                         <AlignCenterContainer>
                             <ArrowLeft style={{margin: 40, height: 30, width: 30}}/>
                         </AlignCenterContainer>
-                    </PressableElement></div>
+                    </PressableElement>
+                </div>
             </div>
         </div>
     </Slide>)
