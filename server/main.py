@@ -8,8 +8,8 @@ from starlette.middleware.cors import CORSMiddleware
 app = FastAPI()
 
 origins = [
-    "1.2.3.5",
-    "1.2.3.3"
+    "http://1.2.3.2:3000",
+    "http://1.2.3.2:55254"
 ]
 
 app.add_middleware(
