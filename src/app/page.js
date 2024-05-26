@@ -29,11 +29,19 @@ export default function Home() {
     const slides = [
         <ControlPage key={0} selected={activeIndex === 0}/>,
         <MainPage key={1} prometheus={prometheusData} nextPageAction={nextPage} isContainerLoaded={isContainerLoaded}/>,
-        <StatusPage key={2} prometheus={prometheusData} title={"SDA"} selected={activeIndex === 2} isExpanded={activeIndex > 1} animate={true}>
-            <div>
-                {prometheusData?.sda?.smartprom_temperature_celsius_raw ?? "loading..."}
-            </div>
-        </StatusPage>,
+        <StatusPage
+            key={2}
+            prometheus={prometheusData}
+            title={"SDA"}
+            selected={activeIndex === 2}
+            isExpanded={activeIndex > 1}
+            animate={true}
+            content = {[
+                prometheusData?.sda?.smartprom_temperature_celsius_raw ?? "loading...",
+                prometheusData?.sda?.smartprom_temperature_celsius_raw ?? "loading...",
+                prometheusData?.sda?.smartprom_temperature_celsius_raw ?? "loading...",
+            ]}
+        />,
         <StatusPage key={3} prometheus={prometheusData}title={"SDB"} selected={activeIndex === 3} isExpanded={true}>
             <div>
                 Empty Page

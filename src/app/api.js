@@ -24,7 +24,8 @@ export const API = class {
         },
         "service": {
             "supervisor": "service/supervisor",
-            "transmission": "service/transmission"
+            "transmission": "service/transmission",
+            "top": "service/top",
         },
         "prometheus": "prometheus"
     }

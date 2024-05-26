@@ -17,8 +17,9 @@ export default function MainPage({nextPageAction = () => {}, prometheus = {}, is
         setTimeout(()=>setReconnecting(true),300)
         setInterval(() => {
             api
-                .get(api.AVAIL_ENDPOINT.ping)
-                .then(() => {
+                .get(api.AVAIL_ENDPOINT.service.top)
+                .then((response) => {
+                    console.log(response)
                     setReconnecting(false)
                 })
                 .catch(()=>{

@@ -75,6 +75,11 @@ def restart_transmission():
     return output_run("sudo service transmission-daemon restart")
 
 
+@app.get("/service/top")
+def get_top():
+    return output_run("top -b -n 1")
+
+
 @app.get("/prometheus")
 def prometheus():
     request_cache = {}

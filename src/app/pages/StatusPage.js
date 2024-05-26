@@ -2,8 +2,16 @@ import React, {useEffect, useRef, useState} from "react";
 import Slide from "@/app/components/Slide";
 import AlignCenterContainer from "@/app/components/AlignCenterContainer";
 import styled from "styled-components";
+import TileItem from "../components/Tile/TileItem";
 
-export default function StatusPage({title = "Title", prometheus = {}, selected=false, children = <></>, isExpanded = false, animate = false}) {
+export default function StatusPage({
+                                       title = "Title",
+                                       prometheus = {},
+                                       selected = false,
+                                       content = [],
+                                       isExpanded = false,
+                                       animate = false
+                                   }) {
     const [expandWithDelay, setExpandWithDelay] = useState(isExpanded)
     const [showDetailsWithDelayPrecondition, setShowDetailsWithDelayPrecondition] = useState(isExpanded)
     const [showDetailsWithDelay, setShowDetailsWithDelay] = useState(isExpanded)
@@ -64,56 +72,13 @@ export default function StatusPage({title = "Title", prometheus = {}, selected=f
                     <LargeTitle ref={titleRef} $visible={scrolledToTop && showDetailsWithDelay}>
                         {title}
                     </LargeTitle>
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    <div style={{height: 20}}/>
+                    <div style={{
+                        display: "flex"
+                    }}>
+                        {content.map(
+                            (item, idx) => <TileItem key={idx} text={item}/>)
+                        }
+                    </div>
                 </div>}
                 <div style={{
                     position: "absolute",
@@ -167,8 +132,9 @@ const SmallTitle = styled.div`
     border-radius: 100px;
     color: black;
     background: rgba(180, 180, 180, 0.2);
-    &:active{
-        transform: translate3d(-50%,0,0) scale(0.9);
+
+    &:active {
+        transform: translate3d(-50%, 0, 0) scale(0.9);
         transition: opacity 0.1s ease, transform 0.1s ease;
     }
 `
