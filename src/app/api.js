@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const SERVER = "http://1.2.3.2:55255/"
+export const SERVER = "http://1.2.3.2:55255/"
 
 export const API = class {
     constructor(timeout = 1000) {
@@ -27,6 +27,8 @@ export const API = class {
             "transmission": "service/transmission",
             "top": "service/top",
         },
-        "prometheus": "prometheus"
+        "sysinfo": "sysinfo",
+        "wall": "wall/",
+        "randomwall": "randomwall"
     }
 }

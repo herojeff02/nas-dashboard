@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
+import {API, SERVER} from "../api.js";
 
 export default function Wallpaper({setLoaded = (a) => {}}) {
     const [wallpaperPath, setWallpaperPath] = useState("")
     const [curtain, setCurtain] = useState(true)
-
     const revealCurtain = () => {
         setTimeout(() => {
             setCurtain(false)
@@ -30,17 +30,14 @@ export default function Wallpaper({setLoaded = (a) => {}}) {
 
 
     function setWallpaper() {
-        let wall_path = [
-            "abduzeedo",
-            "heysupersimi",
-            "oostarteroo",
-            "eberhardgross",
-            "limamauro23"
-        ];
-        setWallpaperPath("https://source.unsplash.com/user/" +
-            wall_path[Math.floor(Math.random() * wall_path.length)] + "/" +
-            window.innerWidth + "x" + window.innerHeight
-        )
+        const api = new API()
+        api
+            .get(api.AVAIL_ENDPOINT.randomwall)
+            .then((r) => {
+                setWallpaperPath(`${SERVER}${api.AVAIL_ENDPOINT.wall}/${r.data}`)
+            })
+            .catch(() => {
+            })
     }
 
     return (

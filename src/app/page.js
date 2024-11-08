@@ -8,7 +8,6 @@ import MainPage from "./pages/MainPage";
 import StatusPage from "./pages/StatusPage";
 import {RevealContainer} from "./components/StyledComponents";
 import Wallpaper from "./components/Wallpaper";
-import BottomSheet from "./components/Sheet/BottomSheet";
 import {API} from "./api";
 import Dialog from "./components/Dialog/Dialog";
 
@@ -17,7 +16,7 @@ export default function Home() {
     const [activeIndex, setActiveIndex] = useState(1)
     const [isReconnecting, setReconnecting] = useState(false)
     const [isContainerLoaded, setContainerLoaded] = useState(false)
-    const [prometheusData, setPrometheusData] = useState({})
+    const [sysInfo, setSysInfo] = useState({})
     const lastTimeout = useRef(0)
     const ref = useRef()
 
@@ -28,21 +27,26 @@ export default function Home() {
 
     const slides = [
         <ControlPage key={0} selected={activeIndex === 0}/>,
-        <MainPage key={1} prometheus={prometheusData} nextPageAction={nextPage} isContainerLoaded={isContainerLoaded}/>,
+        <MainPage key={1} sysInfo={sysInfo} nextPageAction={nextPage} isContainerLoaded={isContainerLoaded}/>,
         <StatusPage
             key={2}
-            prometheus={prometheusData}
+            prometheus={sysInfo}
             title={"SDA"}
             selected={activeIndex === 2}
             isExpanded={activeIndex > 1}
             animate={true}
             content = {[
-                prometheusData?.sda?.smartprom_temperature_celsius_raw ?? "loading...",
-                prometheusData?.sda?.smartprom_temperature_celsius_raw ?? "loading...",
-                prometheusData?.sda?.smartprom_temperature_celsius_raw ?? "loading...",
+                sysInfo?.sda?.smartprom_temperature_celsius_raw ?? "loading...",
+                sysInfo?.sda?.smartprom_temperature_celsius_raw ?? "loading...",
+                sysInfo?.sda?.smartprom_temperature_celsius_raw ?? "loading...",
             ]}
         />,
-        <StatusPage key={3} prometheus={prometheusData}title={"SDB"} selected={activeIndex === 3} isExpanded={true}>
+        <StatusPage 
+            key={3} 
+            prometheus={sysInfo}
+            title={"SDB"} 
+            selected={activeIndex === 3} 
+            isExpanded={true}>
             <div>
                 Empty Page
             </div>
@@ -90,9 +94,9 @@ export default function Home() {
         const api = new API(2000)
         setInterval(() => {
             api
-                .get(api.AVAIL_ENDPOINT.prometheus)
+                .get(api.AVAIL_ENDPOINT.sysinfo)
                 .then((r) => {
-                    setPrometheusData(r.data)
+                    setSysInfo(r.data)
                     console.log(r.data)
                 })
                 .catch(() => {

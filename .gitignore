@@ -35,5 +35,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-/.idea
-/server/.idea
+.idea
+server/.idea
+server/wall
+server/__pycache__/
+docker-compose.yml
+prometheus/

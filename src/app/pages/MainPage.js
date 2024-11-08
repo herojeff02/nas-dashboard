@@ -8,7 +8,7 @@ import styled from "styled-components";
 import PressableElement from "../components/PressableElement";
 import {API} from "../api";
 
-export default function MainPage({nextPageAction = () => {}, prometheus = {}, isContainerLoaded}) {
+export default function MainPage({nextPageAction = () => {}, sysInfo = {}, isContainerLoaded}) {
     const [highPerfTask, setHighPerfTask] = useState("containerd")
     const [isReconnecting, setReconnecting] = useState(false)
 
@@ -45,29 +45,29 @@ export default function MainPage({nextPageAction = () => {}, prometheus = {}, is
                     transitionDelay: "0.25s"
                 }}>
                     <LiGap>
-                        <ComponentLine title={"CPU"} status={prometheus.cpu?.util > 80 ? STATUS.WARN : STATUS.LOAD}/>
+                        <ComponentLine title={"CPU"} status={sysInfo.cpu?.util > 80 ? STATUS.WARN : STATUS.LOAD}/>
                     </LiGap>
                     <LiGap>
-                        <ComponentLine title={"RAM"} status={prometheus.mem?.left < 2 ? STATUS.WARN : STATUS.LOAD}/>
+                        <ComponentLine title={"RAM"} status={sysInfo.mem?.left < 2 ? STATUS.WARN : STATUS.LOAD}/>
                     </LiGap>
                     <LiGap>
                         <ComponentLine title={"NET"} status={isReconnecting ? STATUS.ERR : STATUS.LOAD}/>
                     </LiGap>
                     <LiGap>
                         <ComponentLine title={"SSD"} status={
-                            prometheus.nvme0n1?.smartprom_media_errors > 0 || prometheus.nvme0n1?.smartprom_critical_warning > 0 || prometheus.nvme0n1?.smartprom_percentage_used > 10 || prometheus.nvme0n1?.smartprom_available_spare < 90 || prometheus.nvme0n1?.smartprom_temperature > 60
+                            sysInfo.nvme0n1?.smartprom_media_errors > 0 || sysInfo.nvme0n1?.smartprom_critical_warning > 0 || sysInfo.nvme0n1?.smartprom_percentage_used > 10 || sysInfo.nvme0n1?.smartprom_available_spare < 90 || sysInfo.nvme0n1?.smartprom_temperature > 60
                                 ? STATUS.ERR : STATUS.LOAD
                         }/>
                     </LiGap>
                     <LiGap>
                         <ComponentLine title={"HDD1"} status={
-                            prometheus.sda?.smartprom_current_pending_sector_raw > 0 || prometheus.sda?.smartprom_offline_uncorrectable_raw > 0 ||prometheus.sda?.smartprom_raw_read_error_rate_raw > 0 ||prometheus.sda?.smartprom_spin_retry_count_raw > 0 ||prometheus.sda?.smartprom_temperature_celsius_raw > 60 ||prometheus.sda?.smartprom_seek_error_rate_raw > 0 ||prometheus.sda?.smartprom_reallocated_sector_ct_raw > 0 ||prometheus.sda?.smartprom_reallocated_event_count_raw > 0
+                            sysInfo.sda?.smartprom_current_pending_sector_raw > 0 || sysInfo.sda?.smartprom_offline_uncorrectable_raw > 0 ||sysInfo.sda?.smartprom_raw_read_error_rate_raw > 0 ||sysInfo.sda?.smartprom_spin_retry_count_raw > 0 ||sysInfo.sda?.smartprom_temperature_celsius_raw > 60 ||sysInfo.sda?.smartprom_seek_error_rate_raw > 0 ||sysInfo.sda?.smartprom_reallocated_sector_ct_raw > 0 ||sysInfo.sda?.smartprom_reallocated_event_count_raw > 0
                                 ? STATUS.ERR : STATUS.LOAD
                         }/>
                     </LiGap>
                     <LiGap>
                         <ComponentLine title={"HDD2"} status={
-                            prometheus.sdb?.smartprom_current_pending_sector_raw > 0 || prometheus.sdb?.smartprom_offline_uncorrectable_raw > 0 ||prometheus.sdb?.smartprom_raw_read_error_rate_raw > 0 ||prometheus.sdb?.smartprom_spin_retry_count_raw > 0 ||prometheus.sdb?.smartprom_temperature_celsius_raw > 60 ||prometheus.sdb?.smartprom_seek_error_rate_raw > 0 ||prometheus.sdb?.smartprom_reallocated_sector_ct_raw > 0 ||prometheus.sdb?.smartprom_reallocated_event_count_raw > 0
+                            sysInfo.sdb?.smartprom_current_pending_sector_raw > 0 || sysInfo.sdb?.smartprom_offline_uncorrectable_raw > 0 ||sysInfo.sdb?.smartprom_raw_read_error_rate_raw > 0 ||sysInfo.sdb?.smartprom_spin_retry_count_raw > 0 ||sysInfo.sdb?.smartprom_temperature_celsius_raw > 60 ||sysInfo.sdb?.smartprom_seek_error_rate_raw > 0 ||sysInfo.sdb?.smartprom_reallocated_sector_ct_raw > 0 ||sysInfo.sdb?.smartprom_reallocated_event_count_raw > 0
                                 ? STATUS.ERR : STATUS.LOAD
                         }/>
                     </LiGap>
