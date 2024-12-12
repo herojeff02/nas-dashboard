@@ -28,19 +28,6 @@ app.add_middleware(
 )
 
 
-PROMETHEUS_API = "http://1.2.3.2:9101/api/v1/query?query="
-SATA = ["sda", "sdb"]
-SATA_COMMANDS = ["smartprom_raw_read_error_rate_raw", "smartprom_reallocated_sector_ct_raw",
-                 "smartprom_seek_error_rate_raw", "smartprom_spin_retry_count_raw",
-                 "smartprom_reallocated_event_count_raw", "smartprom_current_pending_sector_raw",
-                 "smartprom_offline_uncorrectable_raw", "smartprom_temperature_celsius_raw",
-                 "smartprom_raw_read_error_rate_raw"]
-NVME = ["nvme0n1"]
-NVME_COMMANDS = ["smartprom_media_errors", "smartprom_critical_warning",
-                 "smartprom_percentage_used", "smartprom_available_spare",
-                 "smartprom_temperature"]
-
-
 def simple_run(command):
     os.system(command)
 
@@ -84,45 +71,77 @@ def restart_transmission():
     return output_run("sudo service transmission-daemon restart")
 
 
-@app.get("/service/top")
-def get_top():
-    return output_run("top -b -n 1")
+@app.get("/sysinfo")
+def sysinfo():
+    zsh_output = {
+        "top" : output_run("top -b -n 1 | head -n8"),
+        "df" : output_run("df"),
+        "sda" : output_run("top -b -n 1 | head -n8"),
+        "sdb" : output_run("top -b -n 1 | head -n8"),
+        "sdc" : output_run("top -b -n 1 | head -n8"),
+        "sdd" : output_run("top -b -n 1 | head -n8"),
+        "sde" : output_run("top -b -n 1 | head -n8"),
+        "nvme0" : output_run("top -b -n 1 | head -n8"),
+        "nvme1" : output_run("top -b -n 1 | head -n8"),
+        }
 
-@app.get("/prometheus")
-def prometheus():
-    request_cache = {}
     result = {}
 
-    def get(query="", idx=0):
-        try:
-            if query in request_cache.keys():
-                return_value = request_cache[query]["data"]["result"][idx]['value'][1]
-            else:
-                tmp = requests.get(PROMETHEUS_API + query).text
-                request_cache[query] = json.loads(tmp)
-                return_value = request_cache[query]["data"]["result"][idx]['value'][1]
-        except Exception as e:
-            return_value = -1
-        return return_value
-
-    for index, drive in enumerate(SATA):
-        for command in SATA_COMMANDS:
-            if drive not in result.keys():
-                result[drive] = {}
-            result[drive][command] = int(get(command, index))
-
-    for index, drive in enumerate(NVME):
-        for command in NVME_COMMANDS:
-            if drive not in result.keys():
-                result[drive] = {}
-            result[drive][command] = int(get(command, index))
+    result["uptime"] = "21:43:22 up 6 days"
 
     result["cpu"] = {}
-    result["cpu"]["freq"] = float(get("(avg by (instance) (node_cpu_scaling_frequency_hertz)) / 1000000000", 0))
-    result["cpu"]["util"] = float(get("100 - (avg by (instance) (irate(node_cpu_seconds_total{mode='idle'}[1m])) * 100)", 0))
+    result["cpu"]["freq"] = float(4.2)
+    result["cpu"]["util"] = float(95)
+    result["cpu"]["temp"] = float(40)
+
     result["mem"] = {}
-    result["mem"]["total"] = float(get("node_memory_MemTotal_bytes / 1024 / 1024 / 1024", 0))
-    result["mem"]["used"] = float(get("(node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / 1024 / 1024 / 1024", 0))
-    result["mem"]["left"] = float(get("node_memory_MemAvailable_bytes / 1024 / 1024 / 1024", 0))
+    result["mem"]["total"] = float(16)
+    result["mem"]["used"] = float(3)
+
+    result["dev"] = {}
+    result["dev"]["sda"] = {}
+    result["dev"]["sda"]["name"] = "sda"
+    result["dev"]["sda"]["capacity"] = float(7.5)
+    result["dev"]["sda"]["usage"] = float(7)
+    result["dev"]["sda"]["temp"] = float(45)
+    result["dev"]["sda"]["smart"] = "PASSED"
+    result["dev"]["sdb"] = {}
+    result["dev"]["sdb"]["name"] = "sdb"
+    result["dev"]["sdb"]["capacity"] = float(7.5)
+    result["dev"]["sdb"]["usage"] = float(7)
+    result["dev"]["sdb"]["temp"] = float(45)
+    result["dev"]["sdb"]["smart"] = "PASSED"
+    result["dev"]["sdc"] = {}
+    result["dev"]["sdc"]["name"] = "sdc"
+    result["dev"]["sdc"]["capacity"] = float(7.5)
+    result["dev"]["sdc"]["usage"] = float(7)
+    result["dev"]["sdc"]["temp"] = float(45)
+    result["dev"]["sdc"]["smart"] = "PASSED"
+    result["dev"]["sdd"] = {}
+    result["dev"]["sdd"]["name"] = "sdd"
+    result["dev"]["sdd"]["capacity"] = float(7.5)
+    result["dev"]["sdd"]["usage"] = float(7)
+    result["dev"]["sdd"]["temp"] = float(45)
+    result["dev"]["sdd"]["smart"] = "PASSED"
+    result["dev"]["sde"] = {}
+    result["dev"]["sde"]["name"] = "sde"
+    result["dev"]["sde"]["capacity"] = float(7.5)
+    result["dev"]["sde"]["usage"] = float(7)
+    result["dev"]["sde"]["temp"] = float(45)
+    result["dev"]["sde"]["smart"] = "PASSED"
+    result["dev"]["nvme0"] = {}
+    result["dev"]["nvme0"]["name"] = "nvme0"
+    result["dev"]["nvme0"]["capacity"] = float(7.5)
+    result["dev"]["nvme0"]["usage"] = float(7)
+    result["dev"]["nvme0"]["temp"] = float(45)
+    result["dev"]["nvme0"]["smart"] = "FAILED"
+    result["dev"]["nvme1"] = {}
+    result["dev"]["nvme1"]["name"] = "nvme1"
+    result["dev"]["nvme1"]["capacity"] = float(7.5)
+    result["dev"]["nvme1"]["usage"] = float(7)
+    result["dev"]["nvme1"]["temp"] = float(45)
+    result["dev"]["nvme1"]["smart"] = "STANDBY"
+
+    result["raw"] = zsh_output
 
     return result

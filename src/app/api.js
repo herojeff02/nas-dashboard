@@ -25,10 +25,9 @@ export const API = class {
         "service": {
             "supervisor": "service/supervisor",
             "transmission": "service/transmission",
-            "top": "service/top",
         },
         "sysinfo": "sysinfo",
-        "wall": "wall/",
+        "wall": "wall",
         "randomwall": "randomwall"
     }
 }

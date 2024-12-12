@@ -74,7 +74,7 @@ export default function Home() {
 
     useEffect(() => {
         //Connecting Dialog
-        const api = new API(1500)
+        const api = new API(4000)
         setTimeout(() => setReconnecting(true), 300)
         const intervalId = setInterval(() => {
             api
@@ -91,7 +91,7 @@ export default function Home() {
 
 
     useEffect(() => {
-        const api = new API(2000)
+        const api = new API(10000)
         setInterval(() => {
             api
                 .get(api.AVAIL_ENDPOINT.sysinfo)

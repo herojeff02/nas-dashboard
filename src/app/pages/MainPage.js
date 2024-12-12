@@ -13,13 +13,12 @@ export default function MainPage({nextPageAction = () => {}, sysInfo = {}, isCon
     const [isReconnecting, setReconnecting] = useState(false)
 
     useEffect(() => {
-        const api = new API(1500)
-        setTimeout(()=>setReconnecting(true),300)
+        const api = new API(2000)
+        // setTimeout(()=>setReconnecting(true),300)
         setInterval(() => {
             api
-                .get(api.AVAIL_ENDPOINT.service.top)
+                .get(api.AVAIL_ENDPOINT.ping)
                 .then((response) => {
-                    console.log(response)
                     setReconnecting(false)
                 })
                 .catch(()=>{
@@ -45,30 +44,30 @@ export default function MainPage({nextPageAction = () => {}, sysInfo = {}, isCon
                     transitionDelay: "0.25s"
                 }}>
                     <LiGap>
-                        <ComponentLine title={"CPU"} status={sysInfo.cpu?.util > 80 ? STATUS.WARN : STATUS.LOAD}/>
+                        <ComponentLine title={"CPU"} status={sysInfo.cpu?.util > 80 ? STATUS.WARN : STATUS.ACTIVE}/>
                     </LiGap>
                     <LiGap>
-                        <ComponentLine title={"RAM"} status={sysInfo.mem?.left < 2 ? STATUS.WARN : STATUS.LOAD}/>
+                        <ComponentLine title={"RAM"} status={sysInfo.mem?.left < 2 ? STATUS.WARN : STATUS.ACTIVE}/>
                     </LiGap>
                     <LiGap>
-                        <ComponentLine title={"NET"} status={isReconnecting ? STATUS.ERR : STATUS.LOAD}/>
+                        <ComponentLine title={"NET"} status={isReconnecting ? STATUS.ERR : STATUS.ACTIVE}/>
                     </LiGap>
                     <LiGap>
                         <ComponentLine title={"SSD"} status={
                             sysInfo.nvme0n1?.smartprom_media_errors > 0 || sysInfo.nvme0n1?.smartprom_critical_warning > 0 || sysInfo.nvme0n1?.smartprom_percentage_used > 10 || sysInfo.nvme0n1?.smartprom_available_spare < 90 || sysInfo.nvme0n1?.smartprom_temperature > 60
-                                ? STATUS.ERR : STATUS.LOAD
+                                ? STATUS.ERR : STATUS.ACTIVE
                         }/>
                     </LiGap>
                     <LiGap>
                         <ComponentLine title={"HDD1"} status={
                             sysInfo.sda?.smartprom_current_pending_sector_raw > 0 || sysInfo.sda?.smartprom_offline_uncorrectable_raw > 0 ||sysInfo.sda?.smartprom_raw_read_error_rate_raw > 0 ||sysInfo.sda?.smartprom_spin_retry_count_raw > 0 ||sysInfo.sda?.smartprom_temperature_celsius_raw > 60 ||sysInfo.sda?.smartprom_seek_error_rate_raw > 0 ||sysInfo.sda?.smartprom_reallocated_sector_ct_raw > 0 ||sysInfo.sda?.smartprom_reallocated_event_count_raw > 0
-                                ? STATUS.ERR : STATUS.LOAD
+                                ? STATUS.ERR : STATUS.ACTIVE
                         }/>
                     </LiGap>
                     <LiGap>
                         <ComponentLine title={"HDD2"} status={
                             sysInfo.sdb?.smartprom_current_pending_sector_raw > 0 || sysInfo.sdb?.smartprom_offline_uncorrectable_raw > 0 ||sysInfo.sdb?.smartprom_raw_read_error_rate_raw > 0 ||sysInfo.sdb?.smartprom_spin_retry_count_raw > 0 ||sysInfo.sdb?.smartprom_temperature_celsius_raw > 60 ||sysInfo.sdb?.smartprom_seek_error_rate_raw > 0 ||sysInfo.sdb?.smartprom_reallocated_sector_ct_raw > 0 ||sysInfo.sdb?.smartprom_reallocated_event_count_raw > 0
-                                ? STATUS.ERR : STATUS.LOAD
+                                ? STATUS.ERR : STATUS.ACTIVE
                         }/>
                     </LiGap>
                 </ul>
